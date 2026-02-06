@@ -1,0 +1,77 @@
+<div class="jugadores-container">
+  <header class="page-header">
+    <h1>Gestión de Jugadores</h1>
+    <div class="header-actions">
+      <button (click)="nuevoJugador()" class="btn-primary">Nuevo Jugador</button>
+      <button (click)="volver()" class="btn-secondary">Volver</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div *ngIf="mostrarFormulario" class="form-card">
+      <h2>{{ jugadorEditando ? 'Editar Jugador' : 'Nuevo Jugador' }}</h2>
+      <form (ngSubmit)="guardarJugador()">
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input type="text" [(ngModel)]="jugadorForm.nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label>Dorsal:</label>
+          <input type="number" [(ngModel)]="jugadorForm.dorsal" name="dorsal" required>
+        </div>
+        <div class="form-group">
+          <label>Posición:</label>
+          <select [(ngModel)]="jugadorForm.posicion" name="posicion" required>
+            <option value="">Seleccione...</option>
+            <option value="Portero">Portero</option>
+            <option value="Defensa">Defensa</option>
+            <option value="Centrocampista">Centrocampista</option>
+            <option value="Delantero">Delantero</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pierna Dominante:</label>
+          <select [(ngModel)]="jugadorForm.piernaDominante" name="piernaDominante" required>
+            <option value="IZQUIERDA">Izquierda</option>
+            <option value="DERECHA">Derecha</option>
+            <option value="AMBAS">Ambas</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Guardar</button>
+          <button type="button" (click)="cancelarFormulario()" class="btn-secondary">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="jugadores-list">
+      <h2>Lista de Jugadores</h2>
+      <div *ngIf="jugadores.length === 0" class="empty-state">
+        <p>No hay jugadores registrados</p>
+      </div>
+      <table *ngIf="jugadores.length > 0">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Dorsal</th>
+            <th>Posición</th>
+            <th>Pierna Dominante</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let jugador of jugadores">
+            <td>{{ jugador.nombre }}</td>
+            <td>{{ jugador.dorsal }}</td>
+            <td>{{ jugador.posicion }}</td>
+            <td>{{ jugador.piernaDominante }}</td>
+            <td>
+              <button (click)="editarJugador(jugador)" class="btn-edit">Editar</button>
+              <button (click)="eliminarJugador(jugador.id!)" class="btn-delete">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

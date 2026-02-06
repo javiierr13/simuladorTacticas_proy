@@ -1,0 +1,99 @@
+<div class="alineaciones-container">
+  <header class="page-header">
+    <h1>Gestión de Alineaciones</h1>
+    <div class="header-actions">
+      <button (click)="nuevoAlineacion()" class="btn-primary">Nueva Alineación</button>
+      <button (click)="volver()" class="btn-secondary">Volver</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div *ngIf="error && !mostrarFormulario" class="error-banner">
+      {{ error }}
+    </div>
+
+    <div *ngIf="mostrarFormulario" class="form-container">
+      <div class="form-sidebar">
+        <h2>{{ alineacionEditando ? 'Editar Alineación' : 'Nueva Alineación' }}</h2>
+        
+        <div class="form-group">
+          <label>Tipo de Formación:</label>
+          <select [(ngModel)]="tipoFormacion" (change)="cambiarTipoFormacion()" name="tipoFormacion">
+            <option value="FUTBOL_7">Fútbol 7</option>
+            <option value="FUTBOL_11">Fútbol 11</option>
+          </select>
+        </div>
+
+        <div class="jugadores-disponibles">
+          <h3>Jugadores Disponibles</h3>
+          <div *ngIf="jugadoresDisponibles.length === 0" class="empty-state">
+            <p>No hay jugadores disponibles</p>
+          </div>
+          <div class="jugador-item" 
+               *ngFor="let jugador of jugadoresDisponibles"
+               draggable="true"
+               (dragstart)="onDragStart($event, jugador)">
+            <span class="dorsal">{{ jugador.dorsal }}</span>
+            <span>{{ jugador.nombre }}</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button (click)="agregarEquipoContrario()" class="btn-secondary">Agregar Equipo Contrario</button>
+          <button (click)="guardarAlineacion()" class="btn-primary">Guardar Alineación</button>
+          <button (click)="cancelarFormulario()" class="btn-secondary">Cancelar</button>
+        </div>
+
+        <div *ngIf="mostrarSelectorFormacion" class="selector-formacion">
+          <h3>Seleccione la formación del equipo contrario:</h3>
+          <div class="formaciones-opciones">
+            <div *ngIf="tipoFormacion === 'FUTBOL_7'" class="opcion-formacion">
+              <button (click)="seleccionarFormacionContraria(1)" class="btn-formacion">1-2-3-1</button>
+              <button (click)="seleccionarFormacionContraria(2)" class="btn-formacion">1-3-1-2</button>
+            </div>
+            <div *ngIf="tipoFormacion === 'FUTBOL_11'" class="opcion-formacion">
+              <button (click)="seleccionarFormacionContraria(1)" class="btn-formacion">1-4-4-2</button>
+              <button (click)="seleccionarFormacionContraria(2)" class="btn-formacion">1-3-5-2</button>
+            </div>
+            <button (click)="cancelarSeleccionFormacion()" class="btn-cancelar">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-container">
+        <div class="campo-futbol" 
+             (dragover)="onPlayerDragOver($event)"
+             (drop)="onPlayerDrop($event)">
+          <div class="jugador-en-campo"
+               *ngFor="let participacion of participaciones; let i = index"
+               [style.left.%]="participacion.posX"
+               [style.top.%]="participacion.posY"
+               draggable="true"
+               (dragstart)="onPlayerDragStart($event, participacion, i)"
+               [class.dragging]="draggedIndex === i">
+            <span class="dorsal">{{ participacion.dorsal }}</span>
+            <span class="nombre">{{ participacion.nombreJugador }}</span>
+            <button class="btn-remove" (click)="eliminarJugadorDelCampo(i)">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!mostrarFormulario" class="alineaciones-list">
+      <h2>Lista de Alineaciones</h2>
+      <div *ngIf="alineaciones.length === 0" class="empty-state">
+        <p>No hay alineaciones registradas</p>
+      </div>
+      <div class="alineacion-card" *ngFor="let alineacion of alineaciones">
+        <div class="alineacion-info">
+          <h3>{{ alineacion.tipoFormacion }}</h3>
+          <p>Creada: {{ alineacion.fechaCreacion | date:'short' }}</p>
+        </div>
+        <div class="alineacion-actions">
+          <button (click)="editarAlineacion(alineacion)" class="btn-edit">Editar</button>
+          <button (click)="eliminarAlineacion(alineacion.id!)" class="btn-delete">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

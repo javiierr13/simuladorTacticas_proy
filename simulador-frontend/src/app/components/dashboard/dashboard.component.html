@@ -1,0 +1,22 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Simulador Táctico</h1>
+    <div class="user-info">
+      <span>Bienvenido, {{ entrenador?.nombre }}</span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="dashboard-content">
+    <div class="menu-cards">
+      <div class="menu-card" (click)="gestionarJugadores()">
+        <h2>Gestionar Jugadores</h2>
+        <p>Añadir, editar o eliminar jugadores</p>
+      </div>
+      <div class="menu-card" (click)="gestionarAlineaciones()">
+        <h2>Gestionar Alineaciones</h2>
+        <p>Crear, editar o eliminar alineaciones</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -37,11 +37,12 @@ ADD CONSTRAINT fk_alineacion_entrenador
 
 -- Relación N:M JUGADOR–ALINEACION (participa) con posX, posY
 CREATE TABLE participa (
-    id_jugador   INT NOT NULL,
-    id_alineacion INT NOT NULL,
-    posX         INT NOT NULL,
-    posY         INT NOT NULL,
-    PRIMARY KEY (id_jugador, id_alineacion),
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    id_jugador     INT NOT NULL,
+    id_alineacion  INT NOT NULL,
+    posX           INT NOT NULL,
+    posY           INT NOT NULL,
+    es_equipo_contrario BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT fk_participa_jugador
         FOREIGN KEY (id_jugador) REFERENCES jugador(id),
     CONSTRAINT fk_participa_alineacion
